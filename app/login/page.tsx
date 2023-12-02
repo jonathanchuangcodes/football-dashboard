@@ -12,13 +12,11 @@ export default function Login({
     'use server'
 
     const email = formData.get('email') as string
-    const password = formData.get('password') as string
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
     })
 
     if (error) {
@@ -33,13 +31,11 @@ export default function Login({
 
     const origin = headers().get('origin')
     const email = formData.get('email') as string
-    const password = formData.get('password') as string
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
-    const { error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
       },
@@ -86,16 +82,6 @@ export default function Login({
           className="rounded-md px-4 py-2 bg-inherit border mb-6"
           name="email"
           placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          placeholder="••••••••"
           required
         />
         <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
