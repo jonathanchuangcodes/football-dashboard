@@ -1,6 +1,8 @@
 import AuthButton from '../components/AuthButton'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
+import football from '@/api/football'
+import Search from '@/components/Search'
 
 export default async function Index() {
   const cookieStore = cookies()
@@ -10,23 +12,25 @@ export default async function Index() {
     // Feel free to remove it once you have Supabase connected.
     try {
       createClient(cookieStore)
-      return true
+      return true;
     } catch (e) {
-      return false
+      return false;
     }
   }
 
-  const isSupabaseConnected = canInitSupabaseClient()
+  let isSupabaseConnected = canInitSupabaseClient();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <button>Home</button>
+          <div className='flex flex-row gap-8'>
+            <button>Home</button>
+            <Search />
+          </div>
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>
-
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <main className="flex-1 flex flex-col gap-6">
           <h1>Football Dashboard</h1>
@@ -40,7 +44,7 @@ export default async function Index() {
             href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
             target="_blank"
             className="font-bold hover:underline"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             Supabase
           </a>

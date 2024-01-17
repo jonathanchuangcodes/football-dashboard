@@ -7,14 +7,18 @@
         "start": "next start"
     },
     "dependencies": {
+        "@headlessui/react": "^1.7.17",
         "@supabase/ssr": "latest",
         "@supabase/supabase-js": "latest",
         "autoprefixer": "10.4.15",
+        "axios": "^1.6.2",
         "geist": "^1.0.0",
+        "lodash": "^4.17.21",
         "next": "latest",
         "postcss": "8.4.29",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-icons": "^4.12.0",
         "tailwindcss": "3.3.3",
         "typescript": "5.1.3"
     },
