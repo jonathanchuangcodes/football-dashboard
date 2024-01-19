@@ -1,39 +1,18 @@
-import AuthButton from '../components/AuthButton'
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
-import football from '@/api/football'
-import Search from '@/components/Search'
-
+import getData from "@/utils/getData"
+import { updateCompetitions, updateTeams, updateFixtures } from "./actions"
 export default async function Index() {
-  const cookieStore = cookies()
-
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient(cookieStore)
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  let isSupabaseConnected = canInitSupabaseClient();
+  let competitions = await updateCompetitions();
+  // let teams = await updateTeams();
+  // let fixtures = await updateFixtures();
+  // console.log("fixtures", fixtures);
+  console.log("competitions", competitions);
+  // console.log("teams", teams);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <div className='flex flex-row gap-8'>
-            <button>Home</button>
-            <Search />
-          </div>
-          {isSupabaseConnected && <AuthButton />}
-        </div>
-      </nav>
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <main className="flex-1 flex flex-col gap-6">
-          <h1>Football Dashboard</h1>
+          <h1>Soccer Dashboard</h1>
         </main>
       </div>
 
