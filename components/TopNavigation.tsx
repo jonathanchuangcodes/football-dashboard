@@ -3,7 +3,11 @@ import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import Search from '@/components/Search'
 
-export default function TopNavigation() {
+interface TopNavigationProps {
+    children?: React.ReactNode;
+}
+
+export const TopNavigation: React.FC<TopNavigationProps> = () => {
     const cookieStore = cookies()
 
     const canInitSupabaseClient = () => {
@@ -29,3 +33,5 @@ export default function TopNavigation() {
         </nav>
     );
 }
+
+export default TopNavigation;

@@ -9,7 +9,7 @@ export interface Parameter {
     [key: string]: number | string | boolean | undefined;
 }
 
-export const get = async (url: string, params: Parameter) => {
+export const get = async (url: string, params: any) => {
     let parameters: string = Object.keys(params).map((key: string) => (`${key}=${params[key]}`)).join("&");
     return football(`${url}?${parameters}`, "GET");
 }

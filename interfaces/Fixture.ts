@@ -1,26 +1,28 @@
 export default interface Fixture {
-    id: number;
-    referee: null | string;
-    timezone: string;
-    date: string;
-    timestamp: number;
-    periods: {
-        first: null | number;
-        second: null | number;
-    };
+    fixture: {
 
-    venue: {
-        id: null | number;
-        name: string;
-        city: string;
-    };
+        id: number;
+        referee: null | string;
+        timezone: string;
+        date: string;
+        timestamp: number;
+        periods: {
+            first: null | number;
+            second: null | number;
+        };
 
-    status: {
-        long: string;
-        short: string;
-        elapsed: number;
-    };
+        venue: {
+            id: null | number;
+            name: null | string;
+            city: null | string;
+        };
 
+        status: {
+            long: null | string;
+            short: null | string;
+            elapsed: null | number;
+        };
+    }
     league: {
         id: null | number;
         name: string;
@@ -102,7 +104,7 @@ export default interface Fixture {
 
 }
 
-interface TeamStatistic {
+export interface TeamStatistic {
     team: {
         id: number;
         name: string;
