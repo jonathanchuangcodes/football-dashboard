@@ -33,7 +33,7 @@ export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
                     <div aria-label="away team score">{fixture.goals.away === null ? "-" : fixture.goals.away}</div>
                 </div>
             </div>
-            <div className="flex flex-row text-center w-1/3">
+            <div className="flex flex-row text-center w-1/3 max-h-40 scroll-smooth overflow-x-clip overflow-y-auto">
                 {statistics.length > 0 && statistics.map((statistic) => {
                     return (
                         <div key={statistic.team.name} className="flex flex-col text-center w-1/2">
