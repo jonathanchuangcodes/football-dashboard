@@ -10,5 +10,5 @@ export default interface TeamStatistic {
 
 interface Statistic {
     type: string;
-    value: number;
+    value: number | string;
 }

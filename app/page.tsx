@@ -28,7 +28,7 @@ export default async function Index() {
         <main className="flex-1 flex w-full flex-col gap-6">
           <div className="w-full flex flex-row gap-8 justify-center">
             <div className="w-90% flex flex-col justify-between gap-4">
-              {allFixtures && allFixtures.map((fixture) => {
+              {allFixtures && allFixtures.slice(0, 2).map((fixture) => {
                 return <FixtureCard key={fixture.id} fixture={fixture} />
               })}
             </div>
