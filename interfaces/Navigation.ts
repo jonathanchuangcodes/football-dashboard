@@ -4,6 +4,6 @@ import Competition from "./Competition";
 export default interface Navigation {
     teams: Team[];
     competitions: Competition[];
-    selected: string;
-    setSelected: (selected: string) => void;
+    setTeams: (team: Team) => void;
+    setCompetitions: (competition: Competition) => void;
 }

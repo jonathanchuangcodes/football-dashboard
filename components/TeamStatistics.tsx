@@ -25,7 +25,7 @@ export default function TeamStatistics({ statistics }: { statistics: TeamStatist
         return { ...homeData, away: parseDataValue(statistic.value) }
     }) : undefined
 
-    console.log(data);
+    // console.log(data);
 
 
     const toPercent = (decimal: number, fixed: number = 0) => `${(decimal * 100).toFixed(fixed)}%`;
@@ -56,20 +56,20 @@ export default function TeamStatistics({ statistics }: { statistics: TeamStatist
 
     return (
         <ResponsiveContainer height={1000}>
-            <AreaChart width={3000} height={1000} data={data} margin={{
+            <AreaChart width={2000} height={1000} data={data} margin={{
                 top: 10,
                 right: 30,
                 left: 0,
                 bottom: 0,
             }} stackOffset="expand" layout="vertical">
                 <XAxis type="number" tickFormatter={toPercent} hide />
-                <YAxis dataKey="name" type="category" mirror width={150} minTickGap={15} interval={0} tickLine={false} hide />
+                <YAxis dataKey="name" type="category" width={150} minTickGap={15} interval={0} tickLine={false} />
                 <Tooltip content={renderTooltipContent} />
                 <Area type="monotone" dataKey="home" stackId="1" stroke="#8884d8" fill="#8884d8">
-                    <LabelList dataKey="home" position="center" />
+                    <LabelList dataKey="home" position="insideLeft" />
                 </Area>
                 <Area type="monotone" dataKey="away" stackId="1" stroke="#82ca9d" fill="#82ca9d" >
-                    <LabelList dataKey="away" position="center" />
+                    <LabelList dataKey="away" position="right" />
                 </Area>
             </AreaChart>
         </ResponsiveContainer>

@@ -12,10 +12,10 @@ interface NavButtonProps {
 export const NavButton: React.FC<NavButtonProps> = ({ icon, title, value }) => {
     return (
         <Link href={value} title={title}>
-            <div className="text-center text-black text-lg bg-white border-solid border-4 border-main rounded-full p-4 w-full">
+            <div className="text-center text-black text-lg bg-white border-solid border-4 border-border rounded-full p-4 w-20 h-20 flex justify-center items-center">
                 {icon ?
                     <Image src={icon} alt={title} width={50} height={50} />
-                    : title}
+                    : <p>{title}</p>}
             </div>
         </Link>)
 }

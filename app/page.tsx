@@ -25,23 +25,23 @@ export default async function Index() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <main className="flex-1 flex w-full flex-col gap-6">
-          <div className="w-full flex flex-row gap-8 justify-center">
-            <div className="w-90% flex flex-col justify-between gap-4">
-              {allFixtures && allFixtures.slice(0, 2).map((fixture) => {
-                return <FixtureCard key={fixture.id} fixture={fixture} />
-              })}
-            </div>
-            <div className="w-10% h-100vh flex flex-col justify-between">
-              <p>
-                Today
-              </p>
-              <p>
-                Tomorrow
-              </p>
-            </div>
+      <div className="flex-1 flex w-full flex-col gap-6">
+        <div className="w-full flex flex-row gap-8 justify-center">
+          <div className="w-full flex flex-col justify-between gap-4">
+            {allFixtures && allFixtures.slice(0, 2).map((fixture) => {
+              return <FixtureCard key={fixture.id} fixture={fixture} />
+            })}
           </div>
-        </main>
+          <div className="text-black w-10% h-100vh flex flex-col justify-between">
+            <p>
+              Today
+            </p>
+            <p>
+              Tomorrow
+            </p>
+          </div>
+        </div>
+      </div>
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
         <p>
           Powered by{' '}

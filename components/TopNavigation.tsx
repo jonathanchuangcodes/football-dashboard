@@ -22,12 +22,9 @@ export const TopNavigation: React.FC<TopNavigationProps> = () => {
     }
     let isSupabaseConnected = canInitSupabaseClient();
     return (
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-            <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-                <div className='flex flex-row gap-8'>
-                    <button>Home</button>
+        <nav className="pl-4 w-full flex justify-between border-b border-b-foreground/10 h-16 pr-4">
+            <div className="w-full flex justify-between items-center text-sm">
                     <Search />
-                </div>
                 {isSupabaseConnected && <AuthButton />}
             </div>
         </nav>

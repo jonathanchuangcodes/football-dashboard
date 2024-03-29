@@ -1,13 +1,13 @@
-import football from "@/api/football";
+import { get } from "@/api/football";
 
-export default async function CompetitionPage({ params }: { params: { slug: string, id: 39 } }) {
-    console.log(params.id);
-    let data = await football.get("/teams", { params: { id: params.id } }).then(({ data }) => {
-        return data.response;
-    });
+export default async function TeamsPage({ params }: { params: { id: string } }) {
+    let response = await get("/teams", { id: params.id });
+    let data = await response.json();
+    console.log(data);
+
     return (
         <div>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <pre className="text-black">{JSON.stringify(data, null, 2)}</pre>
         </div>
     );
 }

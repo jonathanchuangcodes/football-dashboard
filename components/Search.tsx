@@ -1,61 +1,63 @@
 "use client"
 
-import football from "@/api/football";
 import { CgSearch } from "react-icons/cg";
 import { Fragment, useState } from "react";
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Transition } from "@headlessui/react";
+import _ from "lodash";
+import { get } from "@/api/football";
+import { useNav } from "@/contexts/NavigationContext";
+import Link from 'next/link';
+import Image from "next/image";
+
 export default function Search() {
+    let { setTeams } = useNav();
+
     let [search, setSearch] = useState("");
-    let [leagues, setLeagues] = useState([]);
-    let [teams, setTeams] = useState([]);
-    let handleOnChange = (value: any) => {
+    let [competitionResultList, setCompetitionResultList] = useState([]);
+    let [teamResultList, setTeamResultList] = useState([]);
+    let handleOnChange = async (value: string) => {
         setSearch(value);
-        let leagueData;
-        let teamData;
-        if (search.length < 3) return;
-        football.get("/leagues", {
-            params: { search },
-        }).then((data) => {
-            leagueData = data.data.response?.map(({ league }: any) => {
-                return {
-                    name: league.name,
-                    id: league.id,
-                    logo: league.logo,
-                };
-            });
-            console.log(leagueData);
-            setLeagues(leagueData);
+        console.log(search.length, value);
+
+        if (value.length < 3) return;
+        let leaguesResponse = await get("/leagues",
+            { search: value }
+        )
+        let leaguesData = await leaguesResponse.json();
+
+        leaguesData = leaguesData.response?.map(({ league }: any) => {
+            return {
+                name: league.name,
+                id: league.id,
+                logo: league.logo,
+            };
         });
-        football.get("/teams", {
-            params: { search },
-        }).then((data) => {
-            teamData = data.data.response?.map(({ team }: any) => {
-                return {
-                    name: team.name,
-                    id: team.id,
-                    logo: team.logo,
-                };
-            });
-            console.log(teamData);
-            setTeams(teamData);
+        console.log(leaguesData);
+        setCompetitionResultList(leaguesData);
+
+        let teamsResponse = await get("/teams", { search: value })
+        let teamsData = await teamsResponse.json();
+        teamsData = teamsData.response?.map(({ team }: any) => {
+            return {
+                name: team.name,
+                id: team.id,
+                logo: team.logo,
+            };
         });
+        console.log(teamsData);
+        setTeamResultList(teamsData);
     };
     return (
         <div className="flex flex-row justify-center align-middle">
-            {/* <label className="flex flex-col justify-center text-md mr-4">
-                <CgSearch />
-            </label>
-            <input placeholder="Team or Competition" className="rounded-md px-4 py-2 bg-inherit border" name="search" onChange={handleOnChange}>
-            </input> */}
-            <Combobox value={search} onChange={handleOnChange}>
+            <Combobox>
                 <div className="relative mt-1">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                         <Combobox.Input
                             className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                            displayValue={(person: any) => person.name}
+                            displayValue={(value: any) => value.name}
                             onChange={(event) => handleOnChange(event.target.value)}
                         />
-                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <Combobox.Button className="text-black absolute inset-y-0 right-0 flex items-center pr-2">
                             X
                         </Combobox.Button>
                     </div>
@@ -66,13 +68,13 @@ export default function Search() {
                         leaveTo="opacity-0"
                         afterLeave={() => setSearch('')}
                     >
-                        <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {leagues.length === 0 && search !== '' ? (
+                        <Combobox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            {competitionResultList.length === 0 && search !== '' ? (
                                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
-                                    Nothing found.
+                                    No competitions found.
                                 </div>
                             ) : (
-                                leagues.map((league: any) => (
+                                competitionResultList.map((league: any) => (
                                     <Combobox.Option
                                         key={league.id}
                                         className={({ active }) =>
@@ -83,23 +85,28 @@ export default function Search() {
                                     >
                                         {({ selected, active }) => (
                                             <>
-                                                <span
-                                                    className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                        }`}
-                                                >
-                                                    {league.name}
-                                                </span>
+                                                <Link href={`/competitions/${league.id}`}>
+                                                    <div className="rounded border-solid border-2 border-slate-800 flex flex-col items-center justify-center p-2">
+                                                        <span
+                                                            className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                                }`}
+                                                        >
+                                                            {league.name}
+                                                        </span>
+                                                        <Image src={league.logo} alt={league.name} width={50} height={50} />
+                                                    </div>
+                                                </Link>
                                             </>
                                         )}
                                     </Combobox.Option>
                                 ))
                             )}
-                            {teams.length === 0 && search !== '' ? (
+                            {teamResultList.length === 0 && search !== '' ? (
                                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                                     No teams found.
                                 </div>
                             ) : (
-                                teams.map((team: any) => (
+                                teamResultList.map((team: any) => (
                                     <Combobox.Option
                                         key={team.id}
                                         className={({ active }) =>
@@ -110,12 +117,17 @@ export default function Search() {
                                     >
                                         {({ selected, active }) => (
                                             <>
-                                                <span
-                                                    className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                        }`}
-                                                >
-                                                    {team.name}
-                                                </span>
+                                                <Link href={`/teams/${team.id}`}>
+                                                    <div className="rounded border-solid border-2 border-slate-800 flex flex-col items-center justify-center p-2">
+                                                        <span
+                                                            className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                                }`}
+                                                        >
+                                                            {team.name}
+                                                        </span>
+                                                        <Image src={team.logo} alt={team.name} width={50} height={50} />
+                                                    </div>
+                                                </Link>
                                             </>
                                         )}
                                     </Combobox.Option>
