@@ -17,12 +17,12 @@ export const preload = ({ fixture }: { fixture: Fixture }) => {
 export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
 
     let statistics: TeamStatistic[] = await getFixtureStatistics(fixture.fixture.id);
-    // console.log(fixture);
+    console.log(fixture);
 
 
     return (
-        <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-20 opacity-0 p-6 border-border border-4 rounded-lg w-full">
-            <div className="flex flex-col text-center w-1/3">
+        <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-8 opacity-0 p-6 border-border border-4 rounded-lg w-full">
+            <div className="flex flex-col text-center justify-between w-1/3">
                 <div>
                     <h4>{fixture.league.name}</h4>
                     <h5>{fixture.league.round}</h5>
@@ -45,25 +45,12 @@ export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
                         <p aria-label="away team score">{fixture.goals.away === null ? "-" : fixture.goals.away}</p>
                     </div>
                 </div>
-                <div className="flex flex-row justify-between mt-4">
-
+                <div>
+                <h6>{`${fixture.fixture.status.elapsed}'`}</h6>
+                    <h6>{fixture.fixture.status.long}</h6>
                 </div>
             </div>
             <div className="flex flex-row text-center w-full scroll-smooth overflow-x-clip overflow-y-auto max-h-80">
-                {/* {statistics.length > 0 && statistics.map((statistic) => {
-                    return (
-                        <div key={statistic.team.name} className="flex flex-col text-center w-1/2">
-                            <div>{statistic.team.name}</div>
-                            {statistic.statistics.map((stat) => {
-                                return (
-                                    <div key={stat.type}>
-                                        <div >{stat.type}</div>
-                                        <div >{stat.value}</div>
-                                    </div>)
-                            })}
-                        </div>)
-                })
-                } */}
                 <TeamStatistics statistics={statistics} />
             </div>
             <div className="items-center justify-center flex flex-row text-center w-1/3">

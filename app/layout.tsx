@@ -19,18 +19,26 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-slate-100 text-foreground flex">
+    <html lang="en" className={`${GeistSans.className} h-screen`}>
+      <body className="bg-slate-100 text-foreground h-screen ml-24">
         <MainNavigation />
-
-        <div className='flex flex-col w-full'>
         <TopNavigation />
-        <main className="flex flex-col items-center mr-4 ml-4">
+        <main className="max-h-fit mr-4 ml-4">
           {children}
         </main>
-        </div>
-
-
+        <footer className="text-black w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+          <p>
+            Powered by{' '}
+            <a
+              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
+              target="_blank"
+              className="font-bold hover:underline"
+              rel="noopener noreferrer"
+            >
+              Supabase
+            </a>
+          </p>
+        </footer>
       </body>
     </html>
   )

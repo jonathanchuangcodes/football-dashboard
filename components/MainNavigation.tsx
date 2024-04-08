@@ -9,7 +9,7 @@ export default function MainNavigation() {
 
     return (
         <NavigationProvider>
-            <nav className="flex-1 h-full w-24 flex flex-col gap-20 items-left p-4">
+            <nav className="absolute top-0 left-0 flex-1 h-full w-24 flex flex-col gap-20 items-left p-4">
                 <NavButton title={"H"} value={"/"} />
 
                 <div>
@@ -22,6 +22,7 @@ export default function MainNavigation() {
                         <NavButton key={league.id} title={league.name} value={"/teams" + league.id} icon={league.logo} />
                     ))}
                 </div>
+                <button className="bg-slate-100 text-foreground p-2 rounded-md">+</button>
             </nav>
         </NavigationProvider>
 
