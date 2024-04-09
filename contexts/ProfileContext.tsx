@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import Navigation from "@/interfaces/Navigation";
 import Profile from "@/interfaces/Profile";
+import Team from "@/interfaces/Team";
+import Competition from "@/interfaces/Competition";
 
 const ProfileContext = createContext<Profile>({
     teams: [],
@@ -9,7 +10,7 @@ const ProfileContext = createContext<Profile>({
 
 });
 
-export const useNav = () => {
+export const useProfile = () => {
     return useContext(ProfileContext);
 };
 
@@ -18,14 +19,26 @@ export const ProfileProvider = ({
 }: {
     children: React.ReactNode
 }) => {
-    const [profileState, setProfileState] = useState({
+    const [profileState, setProfileState] = useState<Profile>({
         teams: [],
         competitions: [],
         email: "",
     });
 
+    let setTeams = (team: Team) => {
+        let newTeams = [...profileState.teams, team];
+        setProfileState({ ...profileState, teams: newTeams as Team[] });
+    }
+
+    let setCompetitions = (competition: Competition) => {
+        let newCompetitions = [...profileState.competitions, competition];
+        setProfileState({ ...profileState, competitions: newCompetitions as Competition[] });
+    }
+
     const value = {
         ...profileState,
+        setTeams,
+        setCompetitions
     };
     return (
         <ProfileContext.Provider value={value}>

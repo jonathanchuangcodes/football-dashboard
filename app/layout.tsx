@@ -19,26 +19,28 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${GeistSans.className} h-screen`}>
-      <body className="bg-slate-100 text-foreground h-screen ml-24">
+    <html lang="en" className={`${GeistSans.className}`}>
+      <body className="grid-cols-2 max-h-screen bg-slate-100 text-foreground ml-24">
         <MainNavigation />
-        <TopNavigation />
-        <main className="max-h-fit mr-4 ml-4">
-          {children}
-        </main>
-        <footer className="text-black w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-          <p>
-            Powered by{' '}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noopener noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-        </footer>
+        <div className='flex flex-col max-h-screen row-span-11 grid-rows-3'>
+          <TopNavigation />
+          <main className="h-[calc(100vh-10rem)] flex flex-row gap-8 justify-center mr-4 ml-4">
+            {children}
+          </main>
+          <footer className="h-20 flex-initial text-black shrink w-full border-t border-t-foreground/10 p-4 flex justify-center text-center text-xs">
+            <p>
+              Powered by{' '}
+              <a
+                href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
+                target="_blank"
+                className="font-bold hover:underline"
+                rel="noopener noreferrer"
+              >
+                Supabase
+              </a>
+            </p>
+          </footer>
+        </div>
       </body>
     </html>
   )

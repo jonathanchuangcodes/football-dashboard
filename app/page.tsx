@@ -25,13 +25,13 @@ export default async function Index() {
   // console.log("teams", teams);
 
   return (
-    <div className="max-h-[90vh] flex flex-row gap-8 justify-center">
+    <>
       <div className="flex flex-col justify-between gap-4 overflow-y-scroll">
         {allFixtures && allFixtures.slice(0, 4).map((fixture) => {
           return <FixtureCard key={fixture.id} fixture={fixture} />
         })}
       </div>
-      <div className="text-black w-10% h-full flex flex-col justify-between">
+      <div className=" text-black w-10% flex flex-col justify-between">
         <p>
           Today
         </p>
@@ -39,6 +39,6 @@ export default async function Index() {
           Tomorrow
         </p>
       </div>
-    </div>
+    </>
   )
 }

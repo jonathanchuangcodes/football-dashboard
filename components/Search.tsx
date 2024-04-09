@@ -48,7 +48,7 @@ export default function Search() {
         setTeamResultList(teamsData);
     };
     return (
-        <div className="flex flex-row justify-center align-middle text-black text-lg bg-white border-solid border-4 rounded-lg border-border">
+        <div className="ml-24 flex flex-row justify-center align-middle text-black text-lg bg-white border-solid border-4 rounded-lg border-border">
             <Combobox>
                 <div className="relative">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
@@ -68,7 +68,7 @@ export default function Search() {
                         leaveTo="opacity-0"
                         afterLeave={() => setSearch('')}
                     >
-                        <Combobox.Options className="border-solid border-4 rounded-lg border-border z-10 absolute mt-1 max-h-60 w-full overflow-auto bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                        <Combobox.Options className="border-solid border-4 rounded-lg border-border z-10 mt-1 max-h-60 w-full overflow-auto bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             {competitionResultList.length === 0 && search !== '' ? (
                                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                                     No competitions found.
