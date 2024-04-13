@@ -25,7 +25,7 @@ export const updateCompetitions = cache(async (): Promise<Competition[]> => {
     return Promise.all(competitions);
 })
 
-export async function updateTeams(): Promise<Team[]> {
+export const updateTeams = cache(async (): Promise<Team[]> => {
     let teams = await testLeagueIds.map(async (id: string) => {
         let response = await get("/teams", { league: parseInt(id), season: SEASON })
         let data = await response.json();
@@ -42,7 +42,7 @@ export async function updateTeams(): Promise<Team[]> {
     });
 
     return Promise.all(teams);
-}
+});
 
 export const getFixtureList = cache(async (): Promise<Fixture[]> => {
     let response = await get("/fixtures", { live: testLeagueIds.join("-") })
@@ -63,7 +63,7 @@ export const getFixtureList = cache(async (): Promise<Fixture[]> => {
 export const getFixtureListById = cache(async (idList: string): Promise<Fixture[]> => {
     let response = await get("/fixtures", { ids: idList })
     let data = await response.json();
-    let fixtures = data.response;   
+    let fixtures = data.response;
     return fixtures
 })
 

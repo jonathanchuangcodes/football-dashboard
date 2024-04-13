@@ -5,8 +5,10 @@ import Profile from "@/interfaces/Profile";
 
 const ProfileContext = createContext<Profile>({
     teams: [],
-    competitions: [2, 39],
+    competitions: [],
     email: "",
+    addTeam: () => { },
+    addCompetition: () => { },
     setTeams: () => { },
     setCompetitions: () => { },
 });
@@ -20,19 +22,31 @@ export const ProfileProvider = ({
 }: {
     children: React.ReactNode
 }) => {
-    let setTeams = (team: number) => {
+    let addTeam = (team: number) => {
         let newTeams = [...profileState.teams, team];
         setProfileState({ ...profileState, teams: newTeams as number[] });
     }
 
-    let setCompetitions = (competition: number) => {
+    let addCompetition = (competition: number) => {
         let newCompetitions = [...profileState.competitions, competition];
         setProfileState({ ...profileState, competitions: newCompetitions as number[] });
     }
+
+    let setTeams = (teams: number[]) => {
+        setProfileState({ ...profileState, teams });
+    }
+
+    let setCompetitions = (competitions: number[]) => {
+        setProfileState({ ...profileState, competitions });
+    }
+
+
     const [profileState, setProfileState] = useState<Profile>({
         teams: [],
         competitions: [],
         email: "",
+        addTeam,
+        addCompetition,
         setTeams,
         setCompetitions
     });
@@ -41,6 +55,8 @@ export const ProfileProvider = ({
 
     const value = {
         ...profileState,
+        addTeam,
+        addCompetition,
         setTeams,
         setCompetitions
     };

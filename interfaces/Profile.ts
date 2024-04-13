@@ -5,6 +5,8 @@ export default interface Profile {
     teams: number[];
     competitions: number[];
     email: string;
-    setTeams: (team: number) => void,
-    setCompetitions: (competition: number) => void,
+    addTeam: (team: number) => void,
+    addCompetition: (competition: number) => void,
+    setTeams: (team: number[]) => void,
+    setCompetitions: (competition: number[]) => void,
 }

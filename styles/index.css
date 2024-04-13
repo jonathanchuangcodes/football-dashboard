@@ -5,10 +5,6 @@
   display: none;
 }
 
-html {
-  color: "white";
-}
-
 
 @tailwind components;
 @tailwind utilities;

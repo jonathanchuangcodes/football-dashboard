@@ -20,10 +20,12 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
+
+
   return (
     <html lang="en" className={`${GeistSans.className}`}>
       <ProfileProvider>
-        <body className="grid-cols-2 max-h-screen bg-gray-900 text-foreground ml-24">
+        <body className="grid-cols-2 max-h-screen bg-slate-100 text-foreground ml-24">
           <MainNavigation />
           <div className='flex flex-col max-h-screen row-span-11 grid-rows-3'>
             <TopNavigation />
