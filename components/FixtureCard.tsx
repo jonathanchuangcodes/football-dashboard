@@ -17,7 +17,7 @@ export const preload = ({ fixture }: { fixture: Fixture }) => {
 export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
 
     let statistics: TeamStatistic[] = await getFixtureStatistics(fixture.fixture.id);
-    console.log(fixture);
+    // console.log(fixture);
 
 
     return (

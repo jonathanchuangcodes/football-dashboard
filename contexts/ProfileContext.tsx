@@ -1,13 +1,14 @@
+"use client"
+
 import { createContext, useContext, useState } from "react";
 import Profile from "@/interfaces/Profile";
-import Team from "@/interfaces/Team";
-import Competition from "@/interfaces/Competition";
 
 const ProfileContext = createContext<Profile>({
     teams: [],
-    competitions: [],
+    competitions: [2, 39],
     email: "",
-
+    setTeams: () => { },
+    setCompetitions: () => { },
 });
 
 export const useProfile = () => {
@@ -19,21 +20,24 @@ export const ProfileProvider = ({
 }: {
     children: React.ReactNode
 }) => {
+    let setTeams = (team: number) => {
+        let newTeams = [...profileState.teams, team];
+        setProfileState({ ...profileState, teams: newTeams as number[] });
+    }
+
+    let setCompetitions = (competition: number) => {
+        let newCompetitions = [...profileState.competitions, competition];
+        setProfileState({ ...profileState, competitions: newCompetitions as number[] });
+    }
     const [profileState, setProfileState] = useState<Profile>({
         teams: [],
         competitions: [],
         email: "",
+        setTeams,
+        setCompetitions
     });
 
-    let setTeams = (team: Team) => {
-        let newTeams = [...profileState.teams, team];
-        setProfileState({ ...profileState, teams: newTeams as Team[] });
-    }
 
-    let setCompetitions = (competition: Competition) => {
-        let newCompetitions = [...profileState.competitions, competition];
-        setProfileState({ ...profileState, competitions: newCompetitions as Competition[] });
-    }
 
     const value = {
         ...profileState,

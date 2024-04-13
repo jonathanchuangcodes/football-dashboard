@@ -1,36 +1,42 @@
-import { updateCompetitions, updateTeams, getFixtureList, getFixtureListById } from "@/utils/get-data"
-import FixtureCard from "@/components/FixtureCard";
-import "../styles/index.css"
 
-export default async function Index() {
+
+import { updateCompetitions, updateTeams, getFixtureList, getFixtureListById } from "@/utils/get-data"
+import "../styles/index.css"
+import { cookies } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
+import Fixtures from "@/components/Fixtures"
+
+export default function Index() {
   // let competitions = await updateCompetitions();
   // let teams = await updateTeams();
-  let ids = await getFixtureList();
-  let fixtureIdList = ids.map(({ fixture }) => {
-    return fixture.id
-  })
-  let allFixtures: any[] = [];
-  for (let i = 0; i < ids.length; i += 20) {
-    let fixtureIdList = ids.map(({ fixture }) => {
-      return fixture.id
-    }).slice(i, i + 20).join("-")
-    let fixtures = await getFixtureListById(fixtureIdList);
-    allFixtures = [...allFixtures, ...fixtures]
-  };
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+  const isSignedIn = supabase.auth.getUser() !== null
 
-  // console.log(allFixtures);
+  const handleOnClick = async () => {
+    'use server'
 
+    const cookieStore = cookies()
+    const supabase = createClient(cookieStore)
+    const { data: { user } } = await supabase.auth.getUser()
+    let metadata = user?.user_metadata
+    const { error } = await supabase.auth.updateUser({
+      data: { ...metadata, teams: [], competitions: [2, 39] }
+    })
 
-  // console.log("competitions", competitions);
-  // console.log("teams", teams);
+    if (error) {
+      console.log(error)
+    }
+    return
+  }
 
   return (
     <>
-      <div className="flex flex-col justify-between gap-4 overflow-y-scroll">
-        {allFixtures && allFixtures.slice(0, 4).map((fixture) => {
-          return <FixtureCard key={fixture.id} fixture={fixture} />
-        })}
-      </div>
+
+      {isSignedIn && <form action={handleOnClick}>
+        <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">Create Profile</button>
+      </form>}
+      <Fixtures />
       <div className=" text-black w-10% flex flex-col justify-between">
         <p>
           Today
