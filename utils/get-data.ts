@@ -44,21 +44,30 @@ export const updateTeams = cache(async (): Promise<Team[]> => {
     return Promise.all(teams);
 });
 
-export const getFixtureList = cache(async (): Promise<Fixture[]> => {
-    let response = await get("/fixtures", { live: testLeagueIds.join("-") })
-    let liveData = await response.json();
-    let liveFixtures = liveData.response;
-    let completeFixtureList = await Promise.all(testLeagueIds.map(async (league) => {
-        let lastFive = await get("/fixtures", { league: parseInt(league), season: SEASON, last: 5 })
-        let nextFive = await get("/fixtures", { league: parseInt(league), season: SEASON, next: 5 })
-        let lastFiveData = await lastFive.json();
-        let nextFiveData = await nextFive.json();
-        lastFive = lastFiveData.response;
-        nextFive = nextFiveData.response;
-        return [lastFive, nextFive];
-    }));
-    return [...liveFixtures, ...completeFixtureList.flat(2)]
-})
+export const getCompetitionFixtureList = cache(async (id: number): Promise<Fixture[]> => {
+    let nextFiveResponse = await get("/fixtures", { league: id, next: 5 })
+    let lastTenResponse = await get("/fixtures", { league: id, last: 10 })
+    let nextFive = await nextFiveResponse.json();
+    let lastTen = await lastTenResponse.json();
+    let fixtures = [...nextFive.response, ...lastTen.response]
+    return fixtures
+});
+
+export const getAllLiveFixtureList = cache(async (idList: string): Promise<Fixture[]> => {
+    let response = await get("/fixtures", { live: idList })
+    let data = await response.json();
+    let fixtures = data.response;
+    return fixtures
+});
+
+export const getTeamFixtureList = cache(async (id: number): Promise<Fixture[]> => {
+    let nextFiveResponse = await get("/fixtures", { team: id, next: 5 })
+    let lastTenResponse = await get("/fixtures", { team: id, last: 10 })
+    let nextFive = await nextFiveResponse.json();
+    let lastTen = await lastTenResponse.json();
+    let fixtures = [...nextFive.response, ...lastTen.response]
+    return fixtures
+});
 
 export const getFixtureListById = cache(async (idList: string): Promise<Fixture[]> => {
     let response = await get("/fixtures", { ids: idList })

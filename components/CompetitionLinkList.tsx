@@ -1,4 +1,3 @@
-
 import React from "react";
 import NavButton from "@/components/NavButton";
 import { get } from "@/api/football";
@@ -21,7 +20,7 @@ export default async function CompetitionLinkList() {
     return (
         <div className={`${metadata?.competitions?.length ? "flex" : "hidden"} justify-center flex-col align-middle gap-2`}>
             {competitionInfoList?.map((competition: Competition) => (
-                <NavButton key={competition.league.id} title={competition.league.name} value={"/competitions/" + competition.league.id} src={competition.league.logo} />
+                <NavButton key={competition?.league.id} title={competition?.league.name} value={"/competitions/" + competition?.league.id + "/matches/"} src={competition?.league.logo} />
             ))}
         </div>)
 }

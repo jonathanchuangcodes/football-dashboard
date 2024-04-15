@@ -25,9 +25,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.className}`}>
       <ProfileProvider>
-        <body className="grid-cols-2 max-h-screen bg-slate-100 text-foreground ml-24">
+        <body className="grid-cols-2 max-h-screen bg-white text-foreground ml-24">
           <MainNavigation />
-          <div className='flex flex-col max-h-screen row-span-11 grid-rows-3'>
+          <div className='ml-6 flex flex-col max-h-screen row-span-11 grid-rows-3'>
             <TopNavigation />
             <main className="h-[calc(100vh-10rem)] flex flex-row gap-8 justify-center mr-4 ml-4">
               {children}

@@ -1,4 +1,3 @@
-
 import React from "react";
 import NavButton from "@/components/NavButton";
 import { get } from "@/api/football";
@@ -21,7 +20,7 @@ export default async function TeamLinkList() {
     return (
         <div className={`${metadata?.teams?.length ? "block" : "hidden"}`}>
             {teamsInfo?.map((team: Team) => (
-                <NavButton key={team.team.id} title={team.team.name} value={"/teams/" + team.team.id} src={team.team.logo} />
+                <NavButton key={team.team.id} title={team.team.name} value={"/teams/" + team.team.id + "/matches"} src={team.team.logo} />
             ))}
         </div>)
 }

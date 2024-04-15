@@ -17,12 +17,11 @@ export const preload = ({ fixture }: { fixture: Fixture }) => {
 export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
 
     let statistics: TeamStatistic[] = await getFixtureStatistics(fixture.fixture.id);
-    // console.log(fixture);
-
+    let date = new Date(fixture.fixture.date);
 
     return (
-        <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-8 opacity-0 p-6 border-border border-4 rounded-lg w-full">
-            <div className="flex flex-col text-center justify-between w-1/3">
+        <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-4 opacity-0 p-6 border-border border-4 rounded-lg w-full">
+            <div className="flex-1 flex flex-col text-center justify-between">
                 <div>
                     <h4>{fixture.league.name}</h4>
                     <h5>{fixture.league.round}</h5>
@@ -46,14 +45,24 @@ export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
                     </div>
                 </div>
                 <div>
-                <h6>{`${fixture.fixture.status.elapsed}'`}</h6>
+                    {fixture.fixture.status.elapsed ? <h6>{`${fixture.fixture.status.elapsed}'`}</h6> : <h6>{date.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                    })}</h6>}
+                    <h6>{date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}</h6>
                     <h6>{fixture.fixture.status.long}</h6>
                 </div>
             </div>
-            <div className="flex flex-row text-center w-full scroll-smooth overflow-x-clip overflow-y-auto max-h-80">
-                <TeamStatistics statistics={statistics} />
+            <div className="flex-1 flex flex-row text-center justify-center items-center w-full scroll-smooth overflow-x-clip overflow-y-auto max-h-80">
+                {fixture.fixture.status.short !== "NS" ? <TeamStatistics statistics={statistics} /> : `${date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                })}, ${date.toLocaleTimeString('en-US',)}`
+                }
             </div>
-            <div className="items-center justify-center flex flex-row text-center w-1/3">
+            <div className="flex-1 items-center justify-center flex flex-row text-center">
                 Highlights here
             </div>
         </div>

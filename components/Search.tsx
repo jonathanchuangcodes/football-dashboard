@@ -47,7 +47,7 @@ export default function Search() {
         setTeamResultList(teamsData);
     };
     return (
-        <div className="ml-24 w-80 flex flex-row justify-center align-middle text-black text-lg bg-white border-solid border-4 rounded-lg border-border">
+        <div className="w-80 flex flex-row justify-center align-middle text-black text-lg bg-white border-solid border-4 rounded-lg border-border">
             <IconContext.Provider value={{ color: "#092771", size: "2rem" }}>
 
                 <div className="m-auto">
@@ -91,7 +91,7 @@ export default function Search() {
                                     >
                                         {({ selected, active }) => (
                                             <>
-                                                <Link href={`/competitions/${league.id}`}>
+                                                <Link href={`/competitions/${league.id}/matches`}>
                                                     <div className="w-32 h-32 rounded border-solid border-2 border-slate-800 flex flex-col items-center justify-center p-2">
                                                         <span
                                                             className={`block truncate ${selected ? 'font-medium' : 'font-normal'
@@ -125,7 +125,7 @@ export default function Search() {
                                         value={team}
                                     >
                                         {({ selected, active }) => (
-                                            <Link href={`/teams/${team.id}`}>
+                                            <Link href={`/teams/${team.id}/matches`}>
                                                 <div className="w-32 h-32 rounded border-solid border-2 border-slate-800 flex flex-col items-center justify-center p-2">
                                                     <span
                                                         className={`w-32 text-center block truncate ${selected ? 'font-medium' : 'font-normal'

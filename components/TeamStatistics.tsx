@@ -3,7 +3,7 @@
 
 import React from "react";
 import TeamStatistic from "@/interfaces/TeamStatistic";
-import { Area, AreaChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const parseDataValue = (value: number | string | null) => {
     if (typeof value === 'string') {
@@ -55,10 +55,10 @@ export default function TeamStatistics({ statistics }: { statistics: TeamStatist
     };
 
     return (
-        <ResponsiveContainer height={1000}>
-            <AreaChart width={2000} height={1000} data={data} margin={{
+        <ResponsiveContainer height={1000} width={"100%"}>
+            <AreaChart data={data} margin={{
                 top: 10,
-                right: 40,
+                right: 0,
                 left: 0,
                 bottom: 10,
             }} stackOffset="expand" layout="vertical">
