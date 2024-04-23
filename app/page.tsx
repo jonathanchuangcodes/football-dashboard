@@ -4,8 +4,21 @@ import "../styles/index.css"
 import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { getCompetitionFixtureList, getAllLiveFixtureList, getTeamFixtureList } from "@/utils/get-data"
-import FixtureList from "@/components/FixtureList"
 import _ from "lodash"
+import FixtureTimeline from "@/components/FixtureTimeline"
+import { getFixtureStatistics } from "@/utils/get-data"
+import Fixture from "@/interfaces/Fixture"
+import TeamStatistic from "@/interfaces/TeamStatistic"
+
+export const preload = ({ fixture }: { fixture: Fixture }) => {
+  // void evaluates the given expression and returns undefined
+  // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/void
+  if (fixture.fixture.status.short !== "NS") {
+
+    void getFixtureStatistics(fixture.fixture.id)
+  }
+}
+
 export default async function Index() {
 
   const cookieStore = cookies()
@@ -32,17 +45,15 @@ export default async function Index() {
 
   let allFixtureList = [...liveFixtureList, ...competitionFixtureList, ...teamFixtureList]
 
+  allFixtureList = await Promise.all(allFixtureList.map(async (fixture) => {
+    if (fixture.fixture.timestamp - Date.now() < 0) {
+      let statistics: TeamStatistic[] = await getFixtureStatistics(fixture.fixture.id);
+      fixture.statistics = statistics;
+    }
+    return fixture;
+  }));
+
   return (
-    <>
-      <FixtureList fixtures={allFixtureList} />
-      <div className=" text-black w-10% flex flex-col justify-between">
-        <p>
-          Today
-        </p>
-        <p>
-          Tomorrow
-        </p>
-      </div>
-    </>
+      <FixtureTimeline fixtureList={allFixtureList} />
   )
 }

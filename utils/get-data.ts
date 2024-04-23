@@ -1,5 +1,4 @@
 import { cache } from 'react'
-import 'server-only'
 import Team from "@/interfaces/Team";
 import Competition from "@/interfaces/Competition";
 import Fixture from "@/interfaces/Fixture";

@@ -99,7 +99,7 @@ export default interface Fixture {
         }
     ];
     lineups: [];
-    statistics: [];
+    statistics?: TeamStatistic[];
     players: [];
 
 }

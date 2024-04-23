@@ -1,30 +1,16 @@
 import Fixture from "@/interfaces/Fixture"
-import TeamStatistic from "@/interfaces/TeamStatistic"
 import Image from "next/image"
-import { getFixtureStatistics } from "@/utils/get-data"
 import TeamStatistics from "./TeamStatistics"
 
-export const preload = ({ fixture }: { fixture: Fixture }) => {
-    // void evaluates the given expression and returns undefined
-    // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/void
-    if (fixture.fixture.status.short !== "NS") {
-
-        void getFixtureStatistics(fixture.fixture.id)
-    }
-}
-
-
-export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
-
-    let statistics: TeamStatistic[] = await getFixtureStatistics(fixture.fixture.id);
-    let date = new Date(fixture.fixture.date);
+export default function FixtureCard({ fixture }: { fixture: Fixture }) {
+    let date = new Date(fixture.fixture?.date);
 
     return (
         <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-4 opacity-0 p-6 border-border border-4 rounded-lg w-full">
             <div className="flex-1 flex flex-col text-center justify-between">
                 <div>
-                    <h4>{fixture.league.name}</h4>
-                    <h5>{fixture.league.round}</h5>
+                    <h4>{fixture.league?.name}</h4>
+                    <h5>{fixture.league?.round}</h5>
                 </div>
 
                 <div className="flex flex-row justify-between items-center mt-8">
@@ -57,7 +43,7 @@ export default async function FixtureCard({ fixture }: { fixture: Fixture }) {
                 </div>
             </div>
             <div className="flex-1 flex flex-row text-center justify-center items-center w-full scroll-smooth overflow-x-clip overflow-y-auto max-h-80">
-                {fixture.fixture.status.short !== "NS" ? <TeamStatistics statistics={statistics} /> : `${date.toLocaleDateString('en-US', {
+                {fixture.fixture.status.short !== "NS" && fixture.statistics ? <TeamStatistics statistics={fixture.statistics} /> : `${date.toLocaleDateString('en-US', {
                     weekday: 'long',
                 })}, ${date.toLocaleTimeString('en-US',)}`
                 }
