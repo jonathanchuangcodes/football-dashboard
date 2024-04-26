@@ -18,9 +18,9 @@ export default interface Fixture {
         };
 
         status: {
-            long: null | string;
-            short: null | string;
-            elapsed: null | number;
+            long: string;
+            short: string;
+            elapsed: number;
         };
     }
     league: {

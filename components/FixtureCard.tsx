@@ -1,9 +1,27 @@
+'use client'
+import React, { useEffect, useState } from "react"
 import Fixture from "@/interfaces/Fixture"
 import Image from "next/image"
 import TeamStatistics from "./TeamStatistics"
+import { updateFixture } from "@/action"
+import { fixtureInProgress } from "@/utils/fixtures"
 
-export default function FixtureCard({ fixture }: { fixture: Fixture }) {
-    let date = new Date(fixture.fixture?.date);
+export default function FixtureCard({ fixture: fixtureData }: { fixture: Fixture }) {
+    let date = new Date(fixtureData.fixture?.date);
+    let [fixture, setFixture] = useState<Fixture>(fixtureData);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (fixtureInProgress(fixture.fixture.status.short)) {
+            timer = setTimeout(async () => {
+                let updatedFixture = await updateFixture(fixture.fixture.id);
+                setFixture(updatedFixture);
+            }, 1000 * 60)
+        }
+        return () => {
+            clearTimeout(timer)
+        }
+    })
 
     return (
         <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-4 opacity-0 p-6 border-border border-4 rounded-lg w-full">
@@ -16,7 +34,7 @@ export default function FixtureCard({ fixture }: { fixture: Fixture }) {
                 <div className="flex flex-row justify-between items-center mt-8">
                     <div className="flex flex-col gap-4 justify-center pr-8">
                         <div className="h-16 w-16  flex justify-center items-center">
-                            <Image alt={fixture.teams.home.name} src={fixture.teams.home.logo} width={64} height={64} />
+                            <Image alt={fixture.teams?.home.name} src={fixture.teams?.home.logo} width={64} height={64} />
                         </div>
                         <p aria-label="home team score">{fixture.goals.home === null ? "-" : fixture.goals.home}</p>
                     </div>
@@ -24,7 +42,7 @@ export default function FixtureCard({ fixture }: { fixture: Fixture }) {
                     <div className="flex flex-col gap-4 justify-center pl-8">
                         <div className="h-16 w-16 flex justify-center items-center">
                             <div>
-                                <Image alt={fixture.teams.away.name} src={fixture.teams.away.logo} width={64} height={64} />
+                                <Image alt={fixture.teams?.away.name} src={fixture.teams?.away.logo} width={64} height={64} />
                             </div>
                         </div>
                         <p aria-label="away team score">{fixture.goals.away === null ? "-" : fixture.goals.away}</p>

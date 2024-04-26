@@ -5,6 +5,7 @@ import FixtureList from "@/components/FixtureList"
 import Fixture from "@/interfaces/Fixture"
 import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax'
 import { CgArrowDown, CgArrowUp } from "react-icons/cg"
+import { keys } from "lodash"
 
 export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[] }) {
     const today = new Date();
@@ -25,9 +26,6 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
         return fixture.fixture?.timestamp * 1000 - Date.now() < 0;
     });
 
-    console.log("fixturesToday", fixturesToday)
-    console.log("fixturesUpcoming", fixturesUpcoming)
-    console.log("fixturesPast", fixturesPast)
 
     const parallax = useRef<IParallax>(null)
     const capitalizeFirstLetter = (str: string) => {
@@ -54,13 +52,8 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
 
     const Page = ({ currentPage, nextPage, offset, previousPage }: PageProps) => {
 
-
         const previousIndex = Object.keys(legend).indexOf(previousPage);
         const nextIndex = Object.keys(legend).indexOf(nextPage);
-
-
-
-
 
         return (
             <>
@@ -98,12 +91,15 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
     useEffect(() => {
         parallax.current?.scrollTo(1)
     }, [])
-
+    const pages = Object.keys(legend).filter((key) => legend[key].length !== 0).length;
+    const keys = Object.keys(legend).filter((key) => legend[key].length !== 0);
     return (
-        <Parallax config={config} pages={3} ref={parallax} className="!h-[calc(100vh-10rem)]" style={{ width: "90%" }}>
-            {legend["past"] && <Page offset={0} previousPage="none" currentPage="past" nextPage="today" />}
-            {legend["today"] && <Page offset={1} previousPage="past" currentPage="today" nextPage="upcoming" />}
-            {legend["upcoming"] && <Page offset={2} previousPage="today" currentPage="upcoming" nextPage="none" />}
+        <Parallax config={config} pages={pages} ref={parallax} className="!h-[calc(100vh-10rem)]" style={{ width: "90%" }}>
+            {keys.map((key, index) => {
+                return (
+                    <Page key={index} offset={index} previousPage={keys[keys.indexOf(key) - 1] || "none"} currentPage={key} nextPage={keys[keys.indexOf(key) + 1] || "none"} />
+                )
+            })}
         </Parallax>
     )
 }
