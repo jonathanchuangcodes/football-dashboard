@@ -1,10 +1,9 @@
-
-
 import "../styles/index.css"
 import { getAllFixtureList } from "@/utils/get-data"
 import FixtureTimeline from "@/components/FixtureTimeline"
 import { getFixtureStatistics } from "@/utils/get-data"
 import Fixture from "@/interfaces/Fixture"
+import { revalidateTag } from "next/cache"
 
 export const preload = ({ fixture }: { fixture: Fixture }) => {
   // void evaluates the given expression and returns undefined
@@ -17,8 +16,11 @@ export const preload = ({ fixture }: { fixture: Fixture }) => {
 export default async function Index() {
 
   let allFixtureList = await getAllFixtureList();
-
+  async function revalidate() {
+    'use server'
+    revalidateTag("fixtures")
+  }
   return (
-    <FixtureTimeline fixtureList={allFixtureList} />
+    <FixtureTimeline fixtureList={allFixtureList} revalidate={revalidate} />
   )
 }

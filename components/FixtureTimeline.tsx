@@ -5,9 +5,8 @@ import FixtureList from "@/components/FixtureList"
 import Fixture from "@/interfaces/Fixture"
 import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax'
 import { CgArrowDown, CgArrowUp } from "react-icons/cg"
-import { keys } from "lodash"
 
-export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[] }) {
+export default function FixtureTimeline({ fixtureList, revalidate }: { fixtureList: Fixture[], revalidate: () => void }) {
     const today = new Date();
     const monthDateToday = today.getMonth() + today.getDate();
 
@@ -37,6 +36,7 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
         }
     }
 
+
     interface PageProps {
         currentPage: string,
         nextPage: string,
@@ -55,15 +55,23 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
         const previousIndex = Object.keys(legend).indexOf(previousPage);
         const nextIndex = Object.keys(legend).indexOf(nextPage);
 
+        useEffect(() => {
+            const element = document.getElementsByClassName("fixture-list")[0]; // Replace with the actual ID of your scrollable element
+            element.scrollTop = element.scrollHeight;
+            if (fixturesToday.every((fixture) => fixture.fixture.status.short === "NS" && Date.now() - fixture.fixture.timestamp * 1000 < 7.2e+6)) {
+                revalidate();
+            }
+        }, [])
+
         return (
             <>
-                <ParallaxLayer offset={offset} speed={0.2} factor={1} style={{ width: "90%", overflow: "scroll" }}>
+                <ParallaxLayer className="fixture-list" offset={offset} speed={0.2} factor={1} style={{ width: "90%", overflowY: "auto" }}>
                     <FixtureList fixtures={legend[currentPage]} />
                 </ParallaxLayer>
                 <ParallaxLayer offset={offset} speed={0.2} factor={1} style={{ width: "calc(10% - 16px)", top: 0, left: "calc(90% + 16px)" }}>
                     <div className={`text-black flex flex-col align-center justify-between h-full`}>
                         <div>
-                            <button className={`border-border border-4 text-black rounded-md px-2 py-2 w-full ${previousIndex === -1 && "hidden"}`} type="button" onClick={() => scroll(previousIndex)}>
+                            <button aria-label={`Go to ${previousPage} matches`} className={`border-border border-4 text-black rounded-md px-2 py-2 w-full ${previousIndex === -1 && "hidden"}`} type="button" onClick={() => scroll(previousIndex)}>
                                 {capitalizeFirstLetter(previousPage)}
                                 <CgArrowUp />
                             </button>
@@ -72,7 +80,7 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
                             <h1 className="font-bold text-center text-lg w-full">{capitalizeFirstLetter(currentPage)}</h1>
                         </div>
                         <div>
-                            <button className={`border-border border-4 text-black rounded-md px-2 py-2 w-full ${nextIndex === -1 && "hidden"}`} type="button" onClick={() => scroll(nextIndex)}>
+                            <button aria-label={`Go to ${nextPage} matches`} className={`border-border border-4 text-black rounded-md px-2 py-2 w-full ${nextIndex === -1 && "hidden"}`} type="button" onClick={() => scroll(nextIndex)}>
                                 {capitalizeFirstLetter(nextPage)}
                                 <CgArrowDown />
                             </button>
@@ -90,9 +98,13 @@ export default function FixtureTimeline({ fixtureList }: { fixtureList: Fixture[
 
     useEffect(() => {
         parallax.current?.scrollTo(1)
+        console.log(parallax.current?.container);
+
     }, [])
     const pages = Object.keys(legend).filter((key) => legend[key].length !== 0).length;
     const keys = Object.keys(legend).filter((key) => legend[key].length !== 0);
+
+
     return (
         <Parallax config={config} pages={pages} ref={parallax} className="!h-[calc(100vh-10rem)]" style={{ width: "90%" }}>
             {keys.map((key, index) => {

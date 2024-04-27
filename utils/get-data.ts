@@ -66,15 +66,6 @@ export const getAllFixtureList = async (): Promise<Fixture[]> => {
     let metadata = user?.user_metadata
     let teamIdList = metadata?.teams.join(("-"));
     let competitionIdList = metadata?.competitions.join(("-")) || testLeagueIds.join("-");
-    let liveFixtureList: Fixture[] = []
-    if (!teamIdList) {
-        liveFixtureList = await getAllLiveFixtureList();
-    } else {
-        let liveCompetitionFixtureList = await getAllLiveFixtureList(competitionIdList)
-        let liveTeamFixtureList = await getAllLiveFixtureList(teamIdList)
-
-        liveFixtureList = [...liveCompetitionFixtureList, ...liveTeamFixtureList]
-    }
 
     let competitionFixtureList = await Promise.all(await competitionIdList.split("-").map((id: string) => {
         return getCompetitionFixtureList(Number(id));
@@ -86,7 +77,19 @@ export const getAllFixtureList = async (): Promise<Fixture[]> => {
     }))
     teamFixtureList = _.flattenDeep(teamFixtureList)
 
-    let allFixtureList = [...liveFixtureList, ...competitionFixtureList, ...teamFixtureList]
+    // let liveFixtureList: Fixture[] = []
+
+    // if (!teamIdList) {
+    //     liveFixtureList = await getAllLiveFixtureList();
+    // } else {
+    //     let liveCompetitionFixtureList = await getAllLiveFixtureList(competitionIdList)
+    //     let liveTeamFixtureList = await getAllLiveFixtureList(teamIdList)
+
+    //     liveFixtureList = [...liveCompetitionFixtureList, ...liveTeamFixtureList]
+    // }
+    
+
+    let allFixtureList = [...competitionFixtureList, ...teamFixtureList]
 
     allFixtureList = await Promise.all(allFixtureList.map(async (fixture) => {
         if (fixture.fixture.timestamp - Date.now() < 0) {
@@ -106,8 +109,8 @@ export const getAllLiveFixtureList = cache(async (idList?: string): Promise<Fixt
 });
 
 export const getCompetitionFixtureList = async (id: number): Promise<Fixture[]> => {
-    let nextFiveResponse = await get("/fixtures", { league: id, next: 5 })
-    let lastTenResponse = await get("/fixtures", { league: id, last: 10 })
+    let nextFiveResponse = await get("/fixtures", { league: id, next: 5 }, 3600 * 24, ["fixtures"])
+    let lastTenResponse = await get("/fixtures", { league: id, last: 10 }, 3600 * 24, ["fixtures"])
     let nextFive = await nextFiveResponse.json();
     let lastTen = await lastTenResponse.json();
     let fixtures = [...nextFive.response, ...lastTen.response]
@@ -115,8 +118,8 @@ export const getCompetitionFixtureList = async (id: number): Promise<Fixture[]> 
 };
 
 export const getTeamFixtureList = async (id: number): Promise<Fixture[]> => {
-    let nextFiveResponse = await get("/fixtures", { team: id, next: 5 })
-    let lastTenResponse = await get("/fixtures", { team: id, last: 10 })
+    let nextFiveResponse = await get("/fixtures", { team: id, next: 5 }, 3600 * 24, ["fixtures"])
+    let lastTenResponse = await get("/fixtures", { team: id, last: 10 }, 3600 * 24, ["fixtures"])
     let nextFive = await nextFiveResponse.json();
     let lastTen = await lastTenResponse.json();
     let fixtures = [...nextFive.response, ...lastTen.response]
@@ -124,7 +127,7 @@ export const getTeamFixtureList = async (id: number): Promise<Fixture[]> => {
 };
 
 export const getFixtureListById = cache(async (idList: string): Promise<Fixture[]> => {
-    let response = await get("/fixtures", { ids: idList }, 3600)
+    let response = await get("/fixtures", { ids: idList }, 3600 * 24, ["fixtures"])
     let data = await response.json();
     let fixtures = data.response;
     return fixtures
@@ -138,7 +141,7 @@ export const getFixtureById = cache(async (id: number): Promise<Fixture> => {
 })
 
 export const getFixtureStatistics = cache(async (id: number): Promise<TeamStatistic[]> => {
-    let response = await get("/fixtures/statistics", { fixture: id })
+    let response = await get("/fixtures/statistics", { fixture: id }, 3600 * 24)
     let data = await response.json();
     let statistics = data.response;
     return statistics
