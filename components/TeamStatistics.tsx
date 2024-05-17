@@ -16,10 +16,10 @@ const parseDataValue = (value: number | string | null) => {
 }
 
 export default function TeamStatistics({ statistics }: { statistics: TeamStatistic[] }) {
-    let data: any = statistics.length > 0 ? statistics[0].statistics.map((statistic) => {
+    let data: any = statistics?.length > 0 ? statistics[0].statistics.map((statistic) => {
         return { name: statistic.type, home: statistic.value }
     }) : undefined;
-    data = statistics.length > 0 ? statistics[1].statistics.map((statistic, index) => {
+    data = statistics?.length > 0 ? statistics[1].statistics.map((statistic, index) => {
         let homeData = data && { ...data[index] };
         homeData.home = parseDataValue(homeData.home)
         return { ...homeData, away: parseDataValue(statistic.value) }

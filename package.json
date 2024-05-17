@@ -8,6 +8,8 @@
     },
     "dependencies": {
         "@headlessui/react": "^1.7.17",
+        "@react-spring/parallax": "^9.7.3",
+        "@react-spring/web": "^9.7.3",
         "@supabase/ssr": "latest",
         "@supabase/supabase-js": "latest",
         "@uidotdev/usehooks": "^2.4.1",

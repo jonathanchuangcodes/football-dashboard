@@ -33,7 +33,7 @@ export default async function MainNavigation() {
         return
     }
     return (
-        <nav className="row-span-1 absolute top-0 left-0 flex-1 h-full flex flex-col gap-2 items-left p-4">
+        <nav className="row-span-1 absolute top-0 left-0 flex-1 h-full flex flex-col gap-2 items-left p-4 w-28">
             <NavButton title={"Home"} icon={<CgHomeAlt />} value={"/"} />
             <TeamLinkList />
             <CompetitionLinkList />
