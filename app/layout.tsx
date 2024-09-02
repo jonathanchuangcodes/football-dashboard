@@ -27,9 +27,9 @@ export default async function RootLayout({
       <ProfileProvider>
         <body className="grid-cols-2 max-h-screen bg-white text-foreground ml-24">
           <MainNavigation />
-          <div className='ml-6 flex flex-col max-h-screen row-span-11 grid-rows-3'>
+          <div className='ml-6 flex flex-col max-h-screen w-[calc(100vw-8.5rem)] row-span-11 grid-rows-3'>
             <TopNavigation />
-            <main className="h-[calc(100vh-10rem)] flex flex-row gap-8 justify-center ml-4">
+            <main className="h-[calc(100vh-12rem)] flex flex-row gap-8 justify-center mr-4 ml-4">
               {children}
             </main>
             <footer className="h-20 flex-initial text-black shrink w-full border-t border-t-foreground/10 p-4 flex justify-center align-middle text-center text-xs">

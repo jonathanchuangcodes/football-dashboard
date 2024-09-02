@@ -1,27 +1,11 @@
 'use client'
-import React, { useEffect, useState } from "react"
 import Fixture from "@/interfaces/Fixture"
 import Image from "next/image"
 import TeamStatistics from "./TeamStatistics"
-import { updateFixture } from "@/action"
-import { fixtureInProgress } from "@/utils/fixtures"
 
-export default function FixtureCard({ fixture: fixtureData }: { fixture: Fixture }) {
-    let date = new Date(fixtureData.fixture?.date);
-    let [fixture, setFixture] = useState<Fixture>(fixtureData);
-
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-        if (fixtureInProgress(fixture.fixture.status.short)) {
-            timer = setTimeout(async () => {
-                let updatedFixture = await updateFixture(fixture.fixture.id);
-                setFixture(updatedFixture);
-            }, 1000 * 60)
-        }
-        return () => {
-            clearTimeout(timer)
-        }
-    })
+export default function FixtureCard({ fixture }: { fixture: Fixture }) {
+    
+    let date = new Date(fixture.fixture.date);
 
     return (
         <div key={fixture.fixture.id} className="text-black animate-in flex-1 flex flex-row gap-4 opacity-0 p-6 border-border border-4 rounded-lg w-full">

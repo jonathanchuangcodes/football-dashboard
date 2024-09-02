@@ -1,3 +1,4 @@
+import TeamStatistic from "./TeamStatistic";
 export default interface Fixture {
     fixture: {
 
@@ -104,17 +105,3 @@ export default interface Fixture {
 
 }
 
-export interface TeamStatistic {
-    team: {
-        id: number;
-        name: string;
-        logo: string;
-    };
-    statistics: Statistic[];
-}
-
-
-interface Statistic {
-    type: string;
-    value: number;
-}
